@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Budget Buddy - Recurring Expenses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/recurring.css' %}">
+</head>
+<body>
+    <nav class="navbar glass-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Budget Buddy</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'add-expense' %}" class="nav-link active">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Expense</span>
+                </a>
+                <a href="{% url 'analytics' %}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="{% url 'recurring' %}" class="nav-link">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Recurring</span>
+                </a>
+                <a href="{% url 'setting' %}" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            <div class="theme-toggle">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Recurring Expenses</h1>
+                <p>Manage your regular and one-time expenses.</p>
+            </div>
+
+            <div class="recurring-layout">
+                <div class="glass-card recurring-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-sync-alt"></i> Recurring Expenses</h3>
+                        <div class="header-stats">
+                            <span class="total-amount">$820/month</span>
+                            <button class="add-btn" id="add-recurring">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="expense-list" id="recurring-list">
+                        <div class="expense-item">
+                            <div class="expense-icon bills">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Rent</h4>
+                                <div class="expense-meta">
+                                    <span class="frequency">Monthly</span>
+                                    <span class="next-date">Next: Jan 1, 2025</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$450</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon transport">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Bus Pass</h4>
+                                <div class="expense-meta">
+                                    <span class="frequency">Monthly</span>
+                                    <span class="next-date">Next: Jan 5, 2025</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$75</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon entertainment">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Spotify Premium</h4>
+                                <div class="expense-meta">
+                                    <span class="frequency">Monthly</span>
+                                    <span class="next-date">Next: Jan 15, 2025</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$9.99</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon health">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Gym Membership</h4>
+                                <div class="expense-meta">
+                                    <span class="frequency">Monthly</span>
+                                    <span class="next-date">Next: Jan 20, 2025</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$29</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon bills">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Internet</h4>
+                                <div class="expense-meta">
+                                    <span class="frequency">Monthly</span>
+                                    <span class="next-date">Next: Jan 25, 2025</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$45</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card onetime-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-shopping-bag"></i> One-time Expenses</h3>
+                        <div class="header-stats">
+                            <span class="total-amount">$385 this month</span>
+                            <button class="filter-btn" id="filter-onetime">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="expense-list" id="onetime-list">
+                        <div class="expense-item">
+                            <div class="expense-icon education">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Textbook: Advanced Mathematics</h4>
+                                <div class="expense-meta">
+                                    <span class="date">Dec 20, 2024</span>
+                                    <span class="category">Education</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$120</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon shopping">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Winter Jacket</h4>
+                                <div class="expense-meta">
+                                    <span class="date">Dec 18, 2024</span>
+                                    <span class="category">Shopping</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$85</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon entertainment">
+                                <i class="fas fa-film"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Movie Night with Friends</h4>
+                                <div class="expense-meta">
+                                    <span class="date">Dec 15, 2024</span>
+                                    <span class="category">Entertainment</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$45</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon food">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Birthday Dinner</h4>
+                                <div class="expense-meta">
+                                    <span class="date">Dec 12, 2024</span>
+                                    <span class="category">Food</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$68</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon health">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Prescription Medication</h4>
+                                <div class="expense-meta">
+                                    <span class="date">Dec 10, 2024</span>
+                                    <span class="category">Health</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$35</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon transport">
+                                <i class="fas fa-gas-pump"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Gas for Road Trip</h4>
+                                <div class="expense-meta">
+                                    <span class="date">Dec 8, 2024</span>
+                                    <span class="category">Transport</span>
+                                </div>
+                            </div>
+                            <div class="expense-actions">
+                                <span class="amount">$32</span>
+                                <button class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="animated-background">
+        <div class="water-fill"></div>
+    </div>
+
+    <script type="module" src="{% static 'js/theme.js' %}"></script>
+    <script type="module" src="{% static 'js/navigation.js' %}"></script>
+    <script type="module" src="{% static 'js/recurring.js' %}"></script>
+</body>
+</html>

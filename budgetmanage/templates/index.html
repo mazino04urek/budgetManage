@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Budget Buddy - Smart Finance Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+<body>
+    <!-- Landing Navigation -->
+    <nav class="landing-nav glass-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Budget Buddy</span>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="{% url 'auth' %}" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Smart Finance Management for 
+                        <span class="gradient-text">Students</span>
+                    </h1>
+                    <p class="hero-description">
+                        Take control of your finances with AI-powered insights, expense tracking, 
+                        and personalized savings goals designed specifically for college life.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="{% url 'auth' %}" class="cta-btn primary">
+                            <i class="fas fa-rocket"></i>
+                            Start Your Journey
+                        </a>
+                        <button class="cta-btn secondary" id="demo-btn">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">10K+</span>
+                            <span class="stat-label">Students</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">$2M+</span>
+                            <span class="stat-label">Saved</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">4.9★</span>
+                            <span class="stat-label">Rating</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="dashboard-preview glass-card">
+                        <div class="preview-header">
+                            <div class="preview-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <span class="preview-title">Budget Dashboard</span>
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">$1,245</span>
+                                    <span class="stat-desc">Monthly Savings</span>
+                                </div>
+                            </div>
+                            <div class="preview-chart">
+                                <div class="chart-bar" style="height: 60%"></div>
+                                <div class="chart-bar" style="height: 80%"></div>
+                                <div class="chart-bar" style="height: 45%"></div>
+                                <div class="chart-bar" style="height: 90%"></div>
+                                <div class="chart-bar" style="height: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything You Need to Master Your Finances</h2>
+                <p>Powerful tools designed specifically for student life and budgets</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Smart Analytics</h3>
+                    <p>AI-powered insights help you understand spending patterns and optimize your budget automatically.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-target"></i>
+                    </div>
+                    <h3>Goal Tracking</h3>
+                    <p>Set and achieve savings goals with visual progress tracking and milestone celebrations.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Recurring Expenses</h3>
+                    <p>Automatically track subscriptions and recurring payments to avoid surprise charges.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access your budget anywhere with our responsive design that works on all devices.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your financial data is encrypted and stored securely with bank-level security measures.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Student Focused</h3>
+                    <p>Built specifically for student needs with features like textbook budgeting and semester planning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content glass-card">
+                <h2>Ready to Transform Your Financial Future?</h2>
+                <p>Join thousands of students who are already saving more and stressing less about money.</p>
+                <a href="{% url 'auth' %}" class="cta-btn primary large">
+                    <i class="fas fa-arrow-right"></i>
+                    Get Started Free
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-brand">
+                        <i class="fas fa-piggy-bank"></i>
+                        <span>Budget Buddy</span>
+                    </div>
+                    <p>Empowering students to build better financial habits for life.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="#demo">Demo</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Support</h4>
+                        <a href="#help">Help Center</a>
+                        <a href="#contact">Contact</a>
+                        <a href="#faq">FAQ</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Legal</h4>
+                        <a href="#privacy">Privacy</a>
+                        <a href="#terms">Terms</a>
+                        <a href="#security">Security</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Budget Buddy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="animated-background">
+        <div class="water-fill"></div>
+    </div>
+
+    <script type="module" src="{% static 'js/theme.js' %}"></script>
+    <script type="module" src="{% static 'js/landing.js' %}"></script>
+</body>
+</html>

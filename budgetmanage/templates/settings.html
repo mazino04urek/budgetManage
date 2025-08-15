@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Budget Buddy - Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+</head>
+<body>
+    <nav class="navbar glass-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Budget Buddy</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'add-expense' %}" class="nav-link active">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Expense</span>
+                </a>
+                <a href="{% url 'analytics' %}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="{% url 'recurring' %}" class="nav-link">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Recurring</span>
+                </a>
+                <a href="{% url 'setting' %}" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            </div>
+            <div class="theme-toggle">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Settings</h1>
+                <p>Customize your budget preferences and app settings.</p>
+            </div>
+
+            <div class="settings-layout">
+                <div class="glass-card settings-card">
+                    <h3><i class="fas fa-user-cog"></i> Personal Settings</h3>
+                    <div class="settings-section">
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Monthly Budget Goal</h4>
+                                <p>Set your target monthly spending limit</p>
+                            </div>
+                            <div class="setting-control">
+                                <div class="input-group">
+                                    <span class="input-icon">$</span>
+                                    <input type="number" id="budget-goal" placeholder="2000" value="2000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Savings Goal</h4>
+                                <p>Your monthly savings target</p>
+                            </div>
+                            <div class="setting-control">
+                                <div class="input-group">
+                                    <span class="input-icon">$</span>
+                                    <input type="number" id="savings-goal" placeholder="500" value="500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Preferred Currency</h4>
+                                <p>Choose your default currency</p>
+                            </div>
+                            <div class="setting-control">
+                                <select id="currency-select">
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="GBP">GBP (£)</option>
+                                    <option value="CAD">CAD ($)</option>
+                                    <option value="AUD">AUD ($)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Budget Week Start</h4>
+                                <p>When your weekly budget cycle starts</p>
+                            </div>
+                            <div class="setting-control">
+                                <select id="week-start">
+                                    <option value="sunday">Sunday</option>
+                                    <option value="monday" selected>Monday</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card theme-card">
+                    <h3><i class="fas fa-palette"></i> Appearance</h3>
+                    <div class="settings-section">
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Theme Mode</h4>
+                                <p>Choose your preferred color scheme</p>
+                            </div>
+                            <div class="setting-control">
+                                <div class="theme-options">
+                                    <button class="theme-option active" data-theme="light">
+                                        <i class="fas fa-sun"></i>
+                                        <span>Light</span>
+                                    </button>
+                                    <button class="theme-option" data-theme="dark">
+                                        <i class="fas fa-moon"></i>
+                                        <span>Dark</span>
+                                    </button>
+                                    <button class="theme-option" data-theme="auto">
+                                        <i class="fas fa-circle-half-stroke"></i>
+                                        <span>Auto</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Glassmorphism Intensity</h4>
+                                <p>Adjust the glass effect strength</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="range" id="glass-intensity" min="1" max="5" value="3" class="glass-slider">
+                                <div class="range-labels">
+                                    <span>Subtle</span>
+                                    <span>Strong</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Animation Speed</h4>
+                                <p>Control interface animation speed</p>
+                            </div>
+                            <div class="setting-control">
+                                <select id="animation-speed">
+                                    <option value="slow">Slow</option>
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="fast">Fast</option>
+                                    <option value="none">No animations</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card notifications-card">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="settings-section">
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Budget Alerts</h4>
+                                <p>Get notified when approaching your budget limit</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="budget-alerts" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Daily Logging Reminders</h4>
+                                <p>Remind you to log your daily expenses</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="logging-reminders" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Savings Goal Updates</h4>
+                                <p>Celebrate when you reach savings milestones</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="savings-updates" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Smart Tips</h4>
+                                <p>Receive AI-powered money-saving suggestions</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="smart-tips" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card data-card">
+                    <h3><i class="fas fa-database"></i> Data Management</h3>
+                    <div class="settings-section">
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Export Data</h4>
+                                <p>Download your expense data as CSV</p>
+                            </div>
+                            <div class="setting-control">
+                                <button class="export-btn">
+                                    <i class="fas fa-download"></i>
+                                    Export CSV
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <h4>Import Data</h4>
+                                <p>Import expenses from CSV file</p>
+                            </div>
+                            <div class="setting-control">
+                                <input type="file" id="import-file" accept=".csv" style="display: none;">
+                                <button class="import-btn" onclick="document.getElementById('import-file').click()">
+                                    <i class="fas fa-upload"></i>
+                                    Import CSV
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="setting-item danger">
+                            <div class="setting-label">
+                                <h4>Reset All Data</h4>
+                                <p>Clear all expenses and settings (irreversible)</p>
+                            </div>
+                            <div class="setting-control">
+                                <button class="danger-btn" id="reset-data">
+                                    <i class="fas fa-trash-alt"></i>
+                                    Reset Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card about-card">
+                    <h3><i class="fas fa-info-circle"></i> About</h3>
+                    <div class="settings-section">
+                        <div class="app-info">
+                            <div class="app-icon">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="app-details">
+                                <h4>Student Budget Buddy</h4>
+                                <p>Version 1.0.0</p>
+                                <p>Your personal finance companion designed specifically for students.</p>
+                            </div>
+                        </div>
+                        <div class="app-links">
+                            <a href="#" class="link-btn">
+                                <i class="fas fa-life-ring"></i>
+                                Help & Support
+                            </a>
+                            <a href="#" class="link-btn">
+                                <i class="fas fa-shield-alt"></i>
+                                Privacy Policy
+                            </a>
+                            <a href="#" class="link-btn">
+                                <i class="fas fa-star"></i>
+                                Rate this App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="save-settings">
+                <button class="save-btn" id="save-settings">
+                    <i class="fas fa-save"></i>
+                    Save Settings
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div class="animated-background">
+        <div class="water-fill"></div>
+    </div>
+
+    <script type="module" src="{% static 'js/theme.js' %}"></script>
+    <script type="module" src="{% static 'js/navigation.js' %}"></script>
+    <script type="module" src="{% static 'js/settings.js' %}"></script>
+</body>
+</html>

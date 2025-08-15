@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Budget Buddy - Add Expense</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+</head>
+<body>
+    <nav class="navbar glass-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Budget Buddy</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'add-expense' %}" class="nav-link active">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Expense</span>
+                </a>
+                <a href="{% url 'analytics' %}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="{% url 'recurring' %}" class="nav-link">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Recurring</span>
+                </a>
+                <a href="{% url 'setting' %}" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            <div class="theme-toggle">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Add Expense</h1>
+                <p>Log your expenses to track your spending habits.</p>
+            </div>
+
+            <div class="expense-layout">
+                <div class="glass-card form-card">
+                    <h3><i class="fas fa-receipt"></i> New Expense</h3>
+                    <form id="expense-form" class="expense-form">
+                        <div class="form-group">
+                            <label for="amount">Amount ($)</label>
+                            <div class="input-group">
+                                <span class="input-icon">$</span>
+                                <input type="number" id="amount" step="0.01" placeholder="0.00" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <div class="category-grid">
+                                <button type="button" class="category-btn" data-category="food">
+                                    <i class="fas fa-utensils"></i>
+                                    <span>Food</span>
+                                </button>
+                                <button type="button" class="category-btn" data-category="transport">
+                                    <i class="fas fa-bus"></i>
+                                    <span>Transport</span>
+                                </button>
+                                <button type="button" class="category-btn" data-category="shopping">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span>Shopping</span>
+                                </button>
+                                <button type="button" class="category-btn" data-category="entertainment">
+                                    <i class="fas fa-film"></i>
+                                    <span>Entertainment</span>
+                                </button>
+                                <button type="button" class="category-btn" data-category="education">
+                                    <i class="fas fa-book"></i>
+                                    <span>Education</span>
+                                </button>
+                                <button type="button" class="category-btn" data-category="health">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Health</span>
+                                </button>
+                                <button type="button" class="category-btn" data-category="bills">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <span>Bills</span>
+                                </button>
+                                <button type="button" class="category-btn" data-category="other">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                    <span>Other</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description (Optional)</label>
+                            <textarea id="description" placeholder="What did you spend on?" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="recurring">
+                                <span class="checkmark"></span>
+                                This is a recurring expense
+                            </label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-plus"></i>
+                            Add Expense
+                        </button>
+                    </form>
+                </div>
+
+                <div class="sidebar">
+                    <div class="glass-card streak-card">
+                        <h4><i class="fas fa-fire"></i> Logging Streak</h4>
+                        <div class="streak-display">
+                            <div class="streak-number" id="streak-count">12</div>
+                            <div class="streak-label">Days</div>
+                        </div>
+                        <div class="streak-badges">
+                            <div class="badge earned" title="7 Day Streak">
+                                <i class="fas fa-medal"></i>
+                                <span>7</span>
+                            </div>
+                            <div class="badge progress" title="30 Day Streak">
+                                <i class="fas fa-trophy"></i>
+                                <span>30</span>
+                            </div>
+                            <div class="badge locked" title="100 Day Streak">
+                                <i class="fas fa-crown"></i>
+                                <span>100</span>
+                            </div>
+                        </div>
+                        <div class="streak-message">
+                            Keep it up! 18 more days to earn your 30-day badge!
+                        </div>
+                    </div>
+
+                    <div class="glass-card today-card">
+                        <h4><i class="fas fa-calendar-day"></i> Today's Expenses</h4>
+                        <div class="today-total">
+                            <span class="total-amount" id="today-total">$37.50</span>
+                            <span class="total-items" id="today-count">3 expenses</span>
+                        </div>
+                        <div class="today-expenses" id="today-expenses">
+                            <div class="today-expense">
+                                <div class="expense-icon food">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="expense-info">
+                                    <span class="expense-name">Lunch</span>
+                                    <span class="expense-time">2:30 PM</span>
+                                </div>
+                                <span class="expense-amount">$12.50</span>
+                            </div>
+                            <div class="today-expense">
+                                <div class="expense-icon transport">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div class="expense-info">
+                                    <span class="expense-name">Coffee</span>
+                                    <span class="expense-time">10:15 AM</span>
+                                </div>
+                                <span class="expense-amount">$4.50</span>
+                            </div>
+                            <div class="today-expense">
+                                <div class="expense-icon education">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="expense-info">
+                                    <span class="expense-name">Notebook</span>
+                                    <span class="expense-time">9:00 AM</span>
+                                </div>
+                                <span class="expense-amount">$20.50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="animated-background">
+        <div class="water-fill"></div>
+    </div>
+
+    <script type="module" src="{% static 'js/theme.js' %}"></script>
+    <script type="module" src="{% static 'js/navigation.js' %}"></script>
+    <script type="module" src="{% static 'js/expense-form.js' %}"></script>
+</body>
+</html>
