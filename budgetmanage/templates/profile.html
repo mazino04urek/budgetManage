@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Budget Buddy - Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+    <nav class="navbar glass-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Budget Buddy</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'add-expense' %}" class="nav-link active">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Expense</span>
+                </a>
+                <a href="{% url 'analytics' %}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="{% url 'recurring' %}" class="nav-link">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Recurring</span>
+                </a>
+                <a href="{% url 'setting' %}" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            <div class="theme-toggle">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Profile</h1>
+                <p>Manage your account information and financial preferences.</p>
+            </div>
+
+            <div class="profile-layout">
+                <!-- Profile Header Card -->
+                <div class="glass-card profile-header-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar" id="profile-avatar">
+                                <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&crop=face" alt="Profile Picture" id="avatar-image">
+                                <div class="avatar-overlay">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <button class="change-avatar-btn" id="change-avatar">
+                                <i class="fas fa-edit"></i>
+                                Change Photo
+                            </button>
+                        </div>
+                        <div class="profile-info">
+                            <h2 id="profile-name">Sarah Johnson</h2>
+                            <p id="profile-email">sarah.johnson@university.edu</p>
+                            <div class="profile-stats">
+                                <div class="stat-badge">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Member since Dec 2023</span>
+                                </div>
+                                <div class="stat-badge">
+                                    <i class="fas fa-fire"></i>
+                                    <span>12 day streak</span>
+                                </div>
+                                <div class="stat-badge">
+                                    <i class="fas fa-trophy"></i>
+                                    <span>$1,250 saved</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="edit-profile-btn" id="edit-profile">
+                                <i class="fas fa-edit"></i>
+                                Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information Card -->
+                <div class="glass-card personal-info-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                        <button class="edit-section-btn" data-section="personal">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>First Name</label>
+                            <span id="first-name">Sarah</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Last Name</label>
+                            <span id="last-name">Johnson</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Email Address</label>
+                            <span id="email-address">sarah.johnson@university.edu</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phone Number</label>
+                            <span id="phone-number">+1 (555) 123-4567</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Date of Birth</label>
+                            <span id="date-of-birth">March 15, 2002</span>
+                        </div>
+                        <div class="info-item">
+                            <label>University</label>
+                            <span id="university">State University</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Overview Card -->
+                <div class="glass-card financial-overview-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-pie"></i> Financial Overview</h3>
+                        <div class="time-period-toggle">
+                            <button class="period-btn active" data-period="month">Month</button>
+                            <button class="period-btn" data-period="year">Year</button>
+                        </div>
+                    </div>
+                    <div class="financial-stats">
+                        <div class="financial-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="total-saved">$1,250</span>
+                                <span class="stat-label">Total Saved</span>
+                                <span class="stat-change positive">+15% this month</span>
+                            </div>
+                        </div>
+                        <div class="financial-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="monthly-spend">$1,245</span>
+                                <span class="stat-label">Monthly Spending</span>
+                                <span class="stat-change negative">+8% vs last month</span>
+                            </div>
+                        </div>
+                        <div class="financial-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-target"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="savings-rate">65%</span>
+                                <span class="stat-label">Savings Goal</span>
+                                <span class="stat-change positive">On track</span>
+                            </div>
+                        </div>
+                        <div class="financial-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-value" id="avg-daily">$41</span>
+                                <span class="stat-label">Daily Average</span>
+                                <span class="stat-change neutral">Stable</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements Card -->
+                <div class="glass-card achievements-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-medal"></i> Achievements</h3>
+                        <span class="achievement-count">3 of 12 earned</span>
+                    </div>
+                    <div class="achievements-grid">
+                        <div class="achievement-item earned" title="Logged expenses for 7 consecutive days">
+                            <div class="achievement-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h4>Week Warrior</h4>
+                                <p>7-day logging streak</p>
+                                <span class="earned-date">Earned Dec 20, 2024</span>
+                            </div>
+                        </div>
+                        <div class="achievement-item earned" title="Saved $500 in a single month">
+                            <div class="achievement-icon">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h4>Savings Star</h4>
+                                <p>$500 monthly savings</p>
+                                <span class="earned-date">Earned Nov 30, 2024</span>
+                            </div>
+                        </div>
+                        <div class="achievement-item earned" title="Stayed under budget for 3 months">
+                            <div class="achievement-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h4>Budget Master</h4>
+                                <p>3 months under budget</p>
+                                <span class="earned-date">Earned Dec 1, 2024</span>
+                            </div>
+                        </div>
+                        <div class="achievement-item progress" title="Progress: 12/30 days">
+                            <div class="achievement-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h4>Monthly Champion</h4>
+                                <p>30-day logging streak</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%"></div>
+                                </div>
+                                <span class="progress-text">12/30 days</span>
+                            </div>
+                        </div>
+                        <div class="achievement-item locked" title="Save $1000 in total">
+                            <div class="achievement-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h4>Savings Royalty</h4>
+                                <p>Save $1000 total</p>
+                                <span class="locked-text">$1,250 / $1,000</span>
+                            </div>
+                        </div>
+                        <div class="achievement-item locked" title="Log expenses for 100 consecutive days">
+                            <div class="achievement-icon">
+                                <i class="fas fa-diamond"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h4>Diamond Tracker</h4>
+                                <p>100-day logging streak</p>
+                                <span class="locked-text">12/100 days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Security Card -->
+                <div class="glass-card security-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-shield-alt"></i> Account Security</h3>
+                        <div class="security-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Secure</span>
+                        </div>
+                    </div>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-info">
+                                <h4>Password</h4>
+                                <p>Last changed 2 months ago</p>
+                            </div>
+                            <button class="security-btn" id="change-password">
+                                <i class="fas fa-key"></i>
+                                Change
+                            </button>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-info">
+                                <h4>Two-Factor Authentication</h4>
+                                <p>Add an extra layer of security</p>
+                            </div>
+                            <button class="security-btn" id="setup-2fa">
+                                <i class="fas fa-mobile-alt"></i>
+                                Enable
+                            </button>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-info">
+                                <h4>Login Sessions</h4>
+                                <p>Manage active sessions</p>
+                            </div>
+                            <button class="security-btn" id="manage-sessions">
+                                <i class="fas fa-laptop"></i>
+                                Manage
+                            </button>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-info">
+                                <h4>Download Data</h4>
+                                <p>Export your account data</p>
+                            </div>
+                            <button class="security-btn" id="download-data">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Card -->
+                <div class="glass-card preferences-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-sliders-h"></i> Preferences</h3>
+                    </div>
+                    <div class="preferences-grid">
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Email Notifications</h4>
+                                <p>Receive budget alerts and tips</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="email-notifications" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Push Notifications</h4>
+                                <p>Mobile app notifications</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="push-notifications" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Weekly Reports</h4>
+                                <p>Get weekly spending summaries</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="weekly-reports" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Smart Suggestions</h4>
+                                <p>AI-powered saving tips</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="smart-suggestions" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Data Analytics</h4>
+                                <p>Help improve our service</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="data-analytics">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Marketing Emails</h4>
+                                <p>Product updates and offers</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="marketing-emails">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Card -->
+                <div class="glass-card activity-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                        <button class="view-all-btn">
+                            <i class="fas fa-external-link-alt"></i>
+                            View All
+                        </button>
+                    </div>
+                    <div class="activity-timeline">
+                        <div class="activity-item">
+                            <div class="activity-icon login">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Logged in</h4>
+                                <p>Signed in from Chrome on MacBook</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon expense">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Added expense</h4>
+                                <p>Lunch at Campus Café - $12.50</p>
+                                <span class="activity-time">4 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon goal">
+                                <i class="fas fa-target"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Updated savings goal</h4>
+                                <p>Changed monthly goal to $500</p>
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon achievement">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Achievement unlocked</h4>
+                                <p>Earned "Budget Master" badge</p>
+                                <span class="activity-time">2 days ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon settings">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Settings updated</h4>
+                                <p>Enabled dark mode</p>
+                                <span class="activity-time">3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danger Zone Card -->
+                <div class="glass-card danger-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Account Management</h3>
+                    </div>
+                    <div class="danger-actions">
+                        <div class="danger-item">
+                            <div class="danger-info">
+                                <h4>Deactivate Account</h4>
+                                <p>Temporarily disable your account</p>
+                            </div>
+                            <button class="danger-btn" id="deactivate-account">
+                                <i class="fas fa-pause"></i>
+                                Deactivate
+                            </button>
+                        </div>
+                        <div class="danger-item">
+                            <div class="danger-info">
+                                <h4>Delete Account</h4>
+                                <p>Permanently delete your account and all data</p>
+                            </div>
+                            <button class="danger-btn delete" id="delete-account">
+                                <i class="fas fa-trash-alt"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="animated-background">
+        <div class="water-fill"></div>
+    </div>
+
+    <script type="module" src="{% static 'js/theme.js' %}"></script>
+    <script type="module" src="{% static 'js/navigation.js' %}"></script>
+    <script type="module" src="{% static 'js/profile.js' %}"></script>
+</body>
+</html>
