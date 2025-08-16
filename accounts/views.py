@@ -53,8 +53,3 @@ def logout_view(request):
         logout(request)
         return redirect("/auth")
     return redirect("/")
-
-def dashboard(request):
-    if not request.user.is_authenticated:
-        return redirect('/')
-    return render(request, 'dashboard.html', {'user': request.user})

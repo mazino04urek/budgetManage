@@ -17,6 +17,11 @@ if env_path.exists():
 def index(request):
     return render(request, 'index.html')
 
+def dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    return render(request, 'dashboard.html', {'user': request.user})
+
 def setting(request):
     return render(request, 'settings.html')
 
