@@ -8,6 +8,10 @@ import requests
 import io
 from dotenv import load_dotenv
 import os
+import csv
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from .models import Expense
 
 env_path = settings.BASE_DIR / ".env"
 if env_path.exists():
@@ -46,3 +50,27 @@ def analytics(request):
     if not request.user.is_authenticated:
         return redirect("/")
     return render(request, 'analytics.html')
+
+@login_required
+def download_expenses_csv(request):
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': 'attachment; filename="expenses.csv"'},
+    )
+
+    writer = csv.writer(response)
+    writer.writerow(['Date', 'Category', 'Amount', 'Currency', 'Description'])
+
+    expenses = Expense.objects.filter(user=request.user).order_by('date')
+    currency = request.user.profile.preferred_currency
+
+    for expense in expenses:
+        writer.writerow([
+            expense.date, 
+            expense.category.name if expense.category else 'N/A', 
+            expense.amount, 
+            currency,
+            expense.description
+        ])
+
+    return response
