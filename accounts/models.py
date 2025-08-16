@@ -15,6 +15,7 @@ class User(AbstractUser):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "email": self.email,
+            "profile": self.profile.to_dict(),
         }
     
     def save(self, *args, **kwargs):
@@ -46,3 +47,13 @@ class UserProfile(models.Model):
 
         self.last_log_date = today
         self.save()
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user.id,
+            "preferred_currency": self.preferred_currency,
+            "monthly_savings_goal": self.monthly_savings_goal,
+            "last_log_date": self.last_log_date,
+            "streak_count": self.streak_count,
+        }
