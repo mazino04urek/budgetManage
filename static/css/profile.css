@@ -811,7 +811,13 @@ input:checked + .slider:before {
     opacity: 0;
     transition: opacity var(--transition-normal);
 }
-
+.profile-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+.profile-modal.show .modal-content {
+    transform: scale(1) translateY(0);
+}
 .modal-overlay {
     position: absolute;
     top: 0;

@@ -41,6 +41,35 @@ def profile(request):
         return redirect("/")
     return render(request, 'profile.html', {"user": request.user})
 
+@login_required
+def update_profile_view(request):
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        try:
+            user = request.user
+            profile = user.profile
+
+            user.first_name = request.POST.get('first_name', user.first_name)
+            user.last_name = request.POST.get('last_name', user.last_name)
+            user.save()
+
+            profile.phone_number = request.POST.get('phone_number', profile.phone_number)
+            profile.university = request.POST.get('university', profile.university)
+            profile.save()
+            
+            updated_data = {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'phone_number': profile.phone_number,
+                'university': profile.university,
+            }
+
+            return JsonResponse({'status': 'success', 'data': updated_data})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'error': str(e)}, status=400)
+
+    return JsonResponse({'status': 'error', 'error': 'Invalid request'}, status=400)
+
 def recurring(request):
     if not request.user.is_authenticated:
         return redirect("/")
