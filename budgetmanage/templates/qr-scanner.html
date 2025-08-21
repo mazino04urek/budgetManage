@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Budget Buddy - QR Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/qr-scanner.css' %}">
+    <script src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.umd.min.js"></script>
+</head>
+<body>
+    <nav class="navbar glass-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Budget Buddy</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="{% url 'index' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'add-expense' %}" class="nav-link">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Expense</span>
+                </a>
+                <a href="{% url 'analytics' %}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="{% url 'recurring' %}" class="nav-link">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Recurring</span>
+                </a>
+                <a href="{% url 'qr-scanner' %}" class="nav-link active">
+                    <i class="fas fa-qrcode"></i>
+                    <span>QR Scanner</span>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="{% url 'setting' %}" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            <div class="theme-toggle">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>QR Code Scanner</h1>
+                <p>Scan UPI QR codes to make quick payments and track expenses.</p>
+            </div>
+
+            <div class="scanner-layout">
+                <!-- Scanner Section -->
+                <div class="glass-card scanner-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-qrcode"></i> Camera Scanner</h3>
+                        <div class="scanner-controls">
+                            <button id="toggle-camera" class="control-btn">
+                                <i class="fas fa-video"></i>
+                                <span>Start Camera</span>
+                            </button>
+                            <button id="switch-camera" class="control-btn" disabled>
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="scanner-container">
+                        <video id="qr-video" class="scanner-video" playsinline></video>
+                        <div class="scanner-overlay">
+                            <div class="scanner-frame">
+                                <div class="corner top-left"></div>
+                                <div class="corner top-right"></div>
+                                <div class="corner bottom-left"></div>
+                                <div class="corner bottom-right"></div>
+                                <div class="scanning-line"></div>
+                            </div>
+                            <div class="scanner-instructions">
+                                <p>Position the QR code within the frame</p>
+                            </div>
+                        </div>
+                        <div class="scanner-status" id="scanner-status">
+                            <i class="fas fa-camera"></i>
+                            <p>Click "Start Camera" to begin scanning</p>
+                        </div>
+                    </div>
+
+                    <div class="scanner-actions">
+                        <button id="upload-image" class="action-btn secondary">
+                            <i class="fas fa-upload"></i>
+                            Upload Image
+                        </button>
+                        <input type="file" id="file-input" accept="image/*" style="display: none;">
+                        <button id="toggle-flash" class="action-btn secondary" disabled>
+                            <i class="fas fa-flashlight"></i>
+                            Flash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="glass-card results-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-receipt"></i> Scan Results</h3>
+                        <button id="clear-results" class="control-btn" disabled>
+                            <i class="fas fa-trash"></i>
+                            Clear
+                        </button>
+                    </div>
+
+                    <div class="results-container" id="results-container">
+                        <div class="no-results">
+                            <i class="fas fa-qrcode"></i>
+                            <h4>No QR Code Scanned</h4>
+                            <p>Scan a UPI QR code to see payment details here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Scans -->
+                <div class="glass-card history-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Recent Scans</h3>
+                        <span class="scan-count" id="scan-count">0 scans today</span>
+                    </div>
+
+                    <div class="history-list" id="history-list">
+                        <div class="no-history">
+                            <i class="fas fa-clock"></i>
+                            <p>No recent scans</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- UPI Payment Modal -->
+    <div class="upi-modal" id="upi-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-mobile-alt"></i> UPI Payment</h3>
+                <button class="close-modal-btn" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="payment-details" id="payment-details">
+                <!-- Payment details will be populated here -->
+            </div>
+
+            <div class="upi-apps">
+                <h4>Choose UPI App</h4>
+                <div class="apps-grid">
+                    <button class="upi-app-btn" data-app="gpay">
+                        <div class="app-icon gpay">
+                            <i class="fab fa-google-pay"></i>
+                        </div>
+                        <span>Google Pay</span>
+                    </button>
+                    <button class="upi-app-btn" data-app="phonepe">
+                        <div class="app-icon phonepe">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <span>PhonePe</span>
+                    </button>
+                    <button class="upi-app-btn" data-app="paytm">
+                        <div class="app-icon paytm">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <span>Paytm</span>
+                    </button>
+                    <button class="upi-app-btn" data-app="bhim">
+                        <div class="app-icon bhim">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <span>BHIM</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="cancel-btn" id="cancel-payment">Cancel</button>
+                <button class="pay-btn" id="proceed-payment" disabled>
+                    <i class="fas fa-arrow-right"></i>
+                    Proceed to Pay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="animated-background">
+        <div class="water-fill"></div>
+    </div>
+
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/navigation.js' %}"></script>
+    <script src="{% static 'js/qr-scanner.js' %}"></script>
+</body>
+</html>
