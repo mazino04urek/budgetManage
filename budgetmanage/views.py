@@ -12,6 +12,7 @@ import csv
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Expense
+from .forms import AddExpenseForm, RecurringExpenseForm
 
 env_path = settings.BASE_DIR / ".env"
 if env_path.exists():
@@ -31,10 +32,29 @@ def setting(request):
         return redirect("/")
     return render(request, 'settings.html')
 
+@login_required
 def addExpense(request):
-    if not request.user.is_authenticated:
-        return redirect("/")
-    return render(request, 'add-expense.html')
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        is_recurring = request.POST.get('is_recurring') == 'on'
+        if is_recurring:
+            form = RecurringExpenseForm(request.POST, user=request.user)
+        else:
+            form = AddExpenseForm(request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            request.user.profile.update_streak()
+            return JsonResponse({'status': 'success', 'message': 'Expense added successfully.'})
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+
+    form = AddExpenseForm(user=request.user)
+    recurring_form = RecurringExpenseForm(user=request.user)
+    
+    context = {
+        'form': form,
+        'recurring_form': recurring_form,
+    }
+    return render(request, 'add-expense.html', context)
 
 def profile(request):
     if not request.user.is_authenticated:
@@ -103,3 +123,7 @@ def download_expenses_csv(request):
         ])
 
     return response
+
+@login_required
+def qr_scanner(request):
+    return render(request, 'qr-scanner.html')
