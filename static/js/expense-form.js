@@ -1,291 +1,118 @@
-class ExpenseFormManager {
-    constructor() {
-        this.selectedCategory = null;
-        this.init();
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('expense-form');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const hiddenCategoryInput = document.getElementById('category_name');
 
-    init() {
-        this.loadTodayData();
-        this.bindEvents();
-        this.setDefaultDate();
-    }
+    let selectedCategory = null;
 
-    loadTodayData() {
-        // Mock today's data
-        const todayExpenses = [
-            { name: 'Lunch', time: '2:30 PM', amount: 12.50, category: 'food' },
-            { name: 'Coffee', time: '10:15 AM', amount: 4.50, category: 'food' },
-            { name: 'Notebook', time: '9:00 AM', amount: 20.50, category: 'education' }
-        ];
-
-        const total = todayExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-        
-        document.getElementById('today-total').textContent = this.formatCurrency(total);
-        document.getElementById('today-count').textContent = `${todayExpenses.length} expense${todayExpenses.length !== 1 ? 's' : ''}`;
-    }
-
-    bindEvents() {
-        // Category selection
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        categoryButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.selectCategory(e.currentTarget);
-            });
+    // Handle category selection
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            categoryButtons.forEach(btn => btn.classList.remove('selected'));
+            // Add active class to the clicked button
+            button.classList.add('selected');
+            
+            selectedCategory = button.dataset.category;
+            hiddenCategoryInput.value = selectedCategory;
+            console.log(hiddenCategoryInput.value);
         });
+    });
 
-        // Form submission
-        const expenseForm = document.getElementById('expense-form');
-        if (expenseForm) {
-            expenseForm.addEventListener('submit', (e) => {
-                this.handleSubmit(e);
-            });
-        }
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Stop the default browser submission
 
-        // Real-time form validation
-        const amountInput = document.getElementById('amount');
-        if (amountInput) {
-            amountInput.addEventListener('input', () => {
-                this.validateAmount();
-            });
-        }
-
-        // Auto-focus amount input
-        if (amountInput) {
-            amountInput.focus();
-        }
-    }
-
-    selectCategory(button) {
-        // Remove selection from other buttons
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-
-        // Select the clicked button
-        button.classList.add('selected');
-        this.selectedCategory = button.dataset.category;
-
-        // Add selection animation
-        button.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            button.style.transform = '';
-        }, 150);
-    }
-
-    validateAmount() {
-        const amountInput = document.getElementById('amount');
-        const amount = parseFloat(amountInput.value);
-        
-        if (amount <= 0 || isNaN(amount)) {
-            amountInput.style.borderColor = 'var(--danger)';
-            return false;
-        } else {
-            amountInput.style.borderColor = 'var(--primary)';
-            return true;
-        }
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-
-        // Validate form
-        if (!this.validateForm()) {
+        if (!selectedCategory) {
+            showNotification('Please select a category.', 'error');
             return;
         }
 
-        // Get form data
-        const formData = this.getFormData();
-        
-        // Show success animation
-        this.showSuccessAnimation();
-        
-        // Save expense (in real app, this would save to localStorage/API)
-        console.log('Saving expense:', formData);
-        
-        // Reset form
-        setTimeout(() => {
-            this.resetForm();
-            this.updateTodayExpenses(formData);
-        }, 1500);
-    }
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('.submit-btn');
+        setLoadingState(submitBtn, true);
 
-    validateForm() {
-        const amount = parseFloat(document.getElementById('amount').value);
-        const date = document.getElementById('date').value;
+        try {
+            const response = await fetch('/add-expense/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData,
+            });
 
-        if (!amount || amount <= 0) {
-            this.showError('Please enter a valid amount');
-            return false;
+            const result = await response.json();
+
+            if (response.ok) {
+                showNotification('Expense added successfully!', 'success');
+                form.reset();
+                categoryButtons.forEach(btn => btn.classList.remove('selected'));
+                selectedCategory = null;
+            } else {
+                // Display errors from the server
+                const errorMessage = result.errors ? Object.values(result.errors).join(', ') : 'An error occurred.';
+                showNotification(errorMessage, 'error');
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            showNotification('Could not connect to the server.', 'error');
+        } finally {
+            setLoadingState(submitBtn, false);
         }
+    });
 
-        if (!this.selectedCategory) {
-            this.showError('Please select a category');
-            return false;
+
+    const recurringCheckbox = document.getElementById('is_recurring');
+    const recurringFields = document.getElementById('recurring-expense-fields');
+    const submitBtnText = document.getElementById('submit-btn-text');
+
+    recurringCheckbox.addEventListener('change', () => {
+        if (recurringCheckbox.checked) {
+            // Show recurring fields, hide regular date field
+            recurringFields.style.display = 'block';
+            submitBtnText.textContent = 'Add Recurring Rule';
+        } else {
+            // Show regular date field, hide recurring fields
+            recurringFields.style.display = 'none';
+            submitBtnText.textContent = 'Add Expense';
         }
+    });
+});
 
-        if (!date) {
-            this.showError('Please select a date');
-            return false;
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                break;
+            }
         }
-
-        return true;
     }
-
-    getFormData() {
-        return {
-            amount: parseFloat(document.getElementById('amount').value),
-            category: this.selectedCategory,
-            date: document.getElementById('date').value,
-            description: document.getElementById('description').value,
-            recurring: document.getElementById('recurring').checked,
-            timestamp: new Date().toISOString()
-        };
-    }
-
-    showSuccessAnimation() {
-        const submitBtn = document.querySelector('.submit-btn');
-        const originalText = submitBtn.innerHTML;
-        
-        submitBtn.innerHTML = '<i class="fas fa-check"></i> Added Successfully!';
-        submitBtn.style.background = 'var(--success)';
-        submitBtn.style.transform = 'scale(1.05)';
-        
-        setTimeout(() => {
-            submitBtn.innerHTML = originalText;
-            submitBtn.style.background = '';
-            submitBtn.style.transform = '';
-        }, 1500);
-    }
-
-    showError(message) {
-        // Create error message element
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        errorDiv.style.cssText = `
-            background: var(--danger);
-            color: white;
-            padding: var(--space-md);
-            border-radius: var(--radius-md);
-            margin: var(--space-md) 0;
-            animation: slideIn 0.3s ease;
-        `;
-
-        // Insert error message
-        const form = document.getElementById('expense-form');
-        form.insertBefore(errorDiv, form.firstChild);
-
-        // Remove error message after 3 seconds
-        setTimeout(() => {
-            errorDiv.remove();
-        }, 3000);
-    }
-
-    resetForm() {
-        document.getElementById('expense-form').reset();
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-        this.selectedCategory = null;
-        this.setDefaultDate();
-    }
-
-    setDefaultDate() {
-        const dateInput = document.getElementById('date');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-    }
-
-    updateTodayExpenses(newExpense) {
-        // Update today's total
-        const currentTotal = parseFloat(document.getElementById('today-total').textContent.replace(/[^0-9.-]/g, ''));
-        const newTotal = currentTotal + newExpense.amount;
-        
-        document.getElementById('today-total').textContent = this.formatCurrency(newTotal);
-        
-        // Update count
-        const currentCount = parseInt(document.getElementById('today-count').textContent.match(/\d+/)[0]);
-        const newCount = currentCount + 1;
-        document.getElementById('today-count').textContent = `${newCount} expense${newCount !== 1 ? 's' : ''}`;
-
-        // Add expense to list
-        const expensesList = document.getElementById('today-expenses');
-        const expenseElement = this.createExpenseElement(newExpense);
-        expensesList.insertBefore(expenseElement, expensesList.firstChild);
-
-        // Animate new expense
-        expenseElement.style.opacity = '0';
-        expenseElement.style.transform = 'translateX(-20px)';
-        setTimeout(() => {
-            expenseElement.style.transition = 'all 0.3s ease';
-            expenseElement.style.opacity = '1';
-            expenseElement.style.transform = 'translateX(0)';
-        }, 100);
-    }
-
-    createExpenseElement(expense) {
-        const div = document.createElement('div');
-        div.className = 'today-expense';
-        
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('en-US', { 
-            hour: 'numeric', 
-            minute: '2-digit',
-            hour12: true 
-        });
-
-        div.innerHTML = `
-            <div class="expense-icon ${expense.category}">
-                <i class="fas ${this.getCategoryIcon(expense.category)}"></i>
-            </div>
-            <div class="expense-info">
-                <span class="expense-name">${expense.description || this.getCategoryName(expense.category)}</span>
-                <span class="expense-time">${timeString}</span>
-            </div>
-            <span class="expense-amount">${this.formatCurrency(expense.amount)}</span>
-        `;
-
-        return div;
-    }
-
-    getCategoryIcon(category) {
-        const icons = {
-            food: 'fa-utensils',
-            transport: 'fa-bus',
-            shopping: 'fa-shopping-cart',
-            entertainment: 'fa-film',
-            education: 'fa-book',
-            health: 'fa-heart',
-            bills: 'fa-file-invoice-dollar',
-            other: 'fa-ellipsis-h'
-        };
-        return icons[category] || 'fa-ellipsis-h';
-    }
-
-    getCategoryName(category) {
-        const names = {
-            food: 'Food',
-            transport: 'Transport',
-            shopping: 'Shopping',
-            entertainment: 'Entertainment',
-            education: 'Education',
-            health: 'Health',
-            bills: 'Bills',
-            other: 'Other'
-        };
-        return names[category] || 'Other';
-    }
-
-    formatCurrency(amount) {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2
-        }).format(amount);
-    }
+    return cookieValue;
 }
 
-// Initialize expense form manager
-document.addEventListener('DOMContentLoaded', () => {
-    new ExpenseFormManager();
-});
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `<span>${message}</span>`;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    setTimeout(() => {
+        notification.classList.remove('show');
+        notification.addEventListener('transitionend', () => notification.remove());
+    }, 3000);
+}
+function setLoadingState(button, loading) {
+    button.disabled = loading;
+    if (loading) {
+        button.classList.add('loading');
+    } else {
+        button.classList.remove('loading');
+    }
+}
