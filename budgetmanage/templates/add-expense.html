@@ -30,13 +30,17 @@
                     <i class="fas fa-chart-bar"></i>
                     <span>Analytics</span>
                 </a>
-                <a href="{% url 'profile' %}" class="nav-link">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
-                </a>
                 <a href="{% url 'recurring' %}" class="nav-link">
                     <i class="fas fa-sync-alt"></i>
                     <span>Recurring</span>
+                </a>
+                <a href="{% url 'qr-scanner' %}" class="nav-link active">
+                    <i class="fas fa-qrcode"></i>
+                    <span>QR Scanner</span>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
                 </a>
                 <a href="{% url 'setting' %}" class="nav-link">
                     <i class="fas fa-cog"></i>
@@ -66,12 +70,15 @@
             <div class="expense-layout">
                 <div class="glass-card form-card">
                     <h3><i class="fas fa-receipt"></i> New Expense</h3>
+                    
                     <form id="expense-form" class="expense-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="category_name" id="category_name">
                         <div class="form-group">
                             <label for="amount">Amount ($)</label>
                             <div class="input-group">
                                 <span class="input-icon">$</span>
-                                <input type="number" id="amount" step="0.01" placeholder="0.00" required>
+                                <input type="number" name="amount" id="amount" step="0.01" placeholder="0.00" required>
                             </div>
                         </div>
 
@@ -115,25 +122,46 @@
 
                         <div class="form-group">
                             <label for="date">Date</label>
-                            <input type="date" id="date" required>
+                            <input type="date" id="date" name="date" required>
                         </div>
 
                         <div class="form-group">
                             <label for="description">Description (Optional)</label>
-                            <textarea id="description" placeholder="What did you spend on?" rows="3"></textarea>
+                            <textarea name="description" id="description" placeholder="What did you spend on?" rows="3"></textarea>
                         </div>
 
                         <div class="form-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" id="recurring">
+                                <input type="checkbox" name="is_recurring" id="is_recurring">
                                 <span class="checkmark"></span>
                                 This is a recurring expense
                             </label>
                         </div>
 
+                        <!-- Fields ONLY for RECURRING expense (hidden by default) -->
+                        <div id="recurring-expense-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="id_frequency">Frequency</label>
+                                <select name="frequency" id="id_frequency">
+                                    <option value="DAILY">Daily</option>
+                                    <option value="WEEKLY">Weekly</option>
+                                    <option value="MONTHLY" selected>Monthly</option>
+                                    <option value="YEARLY">Yearly</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_start_date">Start Date</label>
+                                <input type="date" id="id_start_date" name="start_date">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_end_date">End Date (Optional)</label>
+                                <input type="date" id="id_end_date" name="end_date">
+                            </div>
+                        </div>
+
                         <button type="submit" class="submit-btn">
                             <i class="fas fa-plus"></i>
-                            Add Expense
+                            <p id="submit-btn-text">Add Expense</p>
                         </button>
                     </form>
                 </div>
