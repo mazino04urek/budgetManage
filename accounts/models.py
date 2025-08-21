@@ -151,10 +151,21 @@ class UserActivity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activities')
     activity_description = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
+    friends = models.ManyToManyField("self", blank=True, symmetrical=False)
 
     class Meta:
-        ordering = ['-timestamp'] # Show newest activities first
+        ordering = ['-timestamp']
         verbose_name_plural = "User Activities"
 
     def __str__(self):
         return f"{self.user.username}: {self.activity_description}"
+    
+    def get_friend_list(self):
+        friends_list = [
+            {
+                "username": friend.user.username,
+                "id": friend.user.id,
+            }
+            for friend in self.friends.all()
+        ]
+        return friends_list
