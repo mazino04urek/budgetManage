@@ -1,11 +1,5 @@
 from django.contrib import admin
-from .models import Category, Expense, RecurringExpense
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'name')
-    search_fields = ('user', 'name')
-
+from .models import Expense, RecurringExpense
 @admin.register(Expense)
 class ExpenseAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'category', 'amount', 'description', 'date')
