@@ -14,6 +14,8 @@ from .forms import LoginForm, SignupForm
 from .models import User
 
 def auth(request):
+    if request.user.is_authenticated:
+        return redirect("/")
     if request.method == 'POST':
         if "login_submit" in request.POST:
             login_form = LoginForm(request.POST)
@@ -27,10 +29,17 @@ def auth(request):
                     return JsonResponse({'success': True})
                 else:
                     login_form.add_error(None, "Invalid email or password")
+                    return JsonResponse({'success': False, 'error': 'Invalid email or password'}, status=400)
         elif "signup_submit" in request.POST:
             signup_form = SignupForm(request.POST)
             login_form = LoginForm()
             if signup_form.is_valid():
+                email = signup_form.cleaned_data['email']
+                if User.objects.filter(email=email).exists():
+                    return JsonResponse({
+                        'success': False,
+                        'error': {'email': ["Email already exists"]}
+                    }, status=400)
                 user = signup_form.save(commit=False)
                 user.set_password(signup_form.cleaned_data['password'])
                 user.username = user.email
@@ -38,7 +47,7 @@ def auth(request):
                 login(request, user)
                 return JsonResponse({'success': True})
             else:
-                signup_form.add_error(None, "Invalid email or password")
+                return JsonResponse({'success': False, 'error': signup_form.errors}, status=400)
     signup_form = SignupForm()
     login_form = LoginForm()
     return render(
