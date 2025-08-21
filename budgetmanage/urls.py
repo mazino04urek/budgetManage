@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from .views import index, dashboard, setting, profile, update_profile_view, addExpense, recurring, analytics
-
+from .views import qr_scanner
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile/update/', update_profile_view, name="update-profile"),
     path('recurring/', recurring, name="recurring"),
     path('analytics/', analytics, name="analytics"),
+    path('qr-scanner/', qr_scanner, name="qr-scanner"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
